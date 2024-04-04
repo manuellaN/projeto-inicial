@@ -8,7 +8,7 @@ var email = document.getElementById("email");
 
 var tel = document.getElementById("tel");
 
-var CEP = document.getElementById("CEP");
+var cep = document.getElementById("cep");
 
 var logra = document.getElementById("logra");
 
@@ -25,17 +25,34 @@ var estado = document.getElementById("estado");
 function alertar(event) {
    // alert("Você clicou no botão! " + nome.value);
 
+   const url = `https://viacep.com.br/ws/${cep.value}/json`;
 
-saida.innerText = "Nome: " + nome.value +
-              "\n Email: " + email.value +
-              "\n Telefone: " + tel.value +
-              "\n CEP: " + CEP.value +
-              "\n Logradouro: " + logra.value +
-              "\n N°: " + num.value +
-              "\n Complemento: " + compl.value +
-              "\n Bairro: " + bairro.value +
-              "\n Cidade: " + cid.value +
-              "\n Estado: " + estado.value
-              ;
+   fetch(url)
+   .then(function(resposta){
+      return resposta.json()
+   })
+   .then(function(dados){
+      logra.value = dados.logradouro;
+      bairro.value = dados.bairro;
+      cid.value = dados.localidade;
+      estado.value = dados.uf;
 
+      saidaDeDados();
+   })
+
+   .catch(function(error){
+      alert(error.message);
+   })
+}
+function saidaDeDados(){
+   saida.innerText = "Nome: " + nome.value +
+   "\n Email: " + email.value +
+   "\n Telefone: " + tel.value +
+   "\n CEP: " + cep.value +
+   "\n Logradouro: " + logra.value +
+   "\n N°: " + num.value +
+   "\n Complemento: " + compl.value +
+   "\n Bairro: " + bairro.value +
+   "\n Cidade: " + cid.value +
+   "\n Estado: " + estado.value;
 }
